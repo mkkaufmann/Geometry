@@ -8,6 +8,7 @@ using System.Threading.Tasks;
  * 1/24/18
  * practices interfaces and constructor handling
  */
+
 namespace GeometricSolids2
 {
     interface IGeometricSolid
@@ -18,8 +19,8 @@ namespace GeometricSolids2
     }
     class Cube : IGeometricSolid
     {
-        double s = -1;
-        double d = -1;
+        private double s = -1;
+        private double d = -1;
         public Cube(double _s, double _d)
         {
             S = _s;
@@ -38,7 +39,7 @@ namespace GeometricSolids2
                 throw new Exception("incorrect input" + errorMessage);
             }
         }
-        double S
+        public double S
         {
             get { return s; }
             set
@@ -55,7 +56,7 @@ namespace GeometricSolids2
         }
 
 
-        double D
+        public double D
         {
             get { return d; }
             set
@@ -86,25 +87,50 @@ namespace GeometricSolids2
         {
             return ("Side length: "+S+",Density: "+D+", Mass: "+getMass()+", Surface Area: "+getSA()+", Volume: "+getVolume());
         }
+
+        public static bool operator ==(Cube c1,Cube c2)
+        {
+            if (c1.S == c2.S && c1.D == c2.D)
+                return true;
+            return false;
+        }
+        public static bool operator !=(Cube c1, Cube c2)
+        {
+            if (!(c1.S == c2.S && c1.D == c2.D))
+                return true;
+            return false;
+        }
+    }
+    class ColorCube : Cube
+    {
+        private string color = "";
+        public ColorCube(double _s, double _d, string _color):base(_s, _d)
+        {
+            color = _color;
+        }
+        public string Color
+        {
+            get { return color; }
+            set
+            {
+                color = value;
+            }
+        }
+        
+        public override string ToString()
+        {
+            return ("Side length: " + S + ",Density: " + D + ", Mass: " + getMass() + ", Surface Area: " + getSA() + ", Volume: " + getVolume()+", Color: "+Color);
+        }
     }
     class Program
     {
         static void Main(string[] args)
         {
-            Cube y = null;
-            Cube x = null;
-            Cube h = null;
-            Cube d = null;
+            Cube c1 = null;
+            Cube c2 = null;
             try
             {
-                y = new Cube(1, 2);
-            }catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            try
-            {
-                x = new Cube(-1, -1);
+                c1 = new Cube(1, 2);
             }
             catch (Exception e)
             {
@@ -112,33 +138,18 @@ namespace GeometricSolids2
             }
             try
             {
-                h = new Cube(-1, 1);
+                c2 = new Cube(1, 2);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            try
+            if (c1 == c2)
             {
-                d = new Cube(1, -2);
+                StringBuilder sb = new StringBuilder("c1");
+                sb.Append(" & c2 are =");
+                Console.WriteLine(sb);
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            if (y != null)
-            {
-                Console.WriteLine(y.ToString());
-            }
-            if (h != null)
-            {
-                Console.WriteLine(h.ToString());
-            }
-            if (d != null)
-            {
-                Console.WriteLine(d.ToString());
-            }
-
 
         }
     }
